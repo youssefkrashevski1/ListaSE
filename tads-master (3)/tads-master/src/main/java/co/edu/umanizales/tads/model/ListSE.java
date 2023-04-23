@@ -115,48 +115,39 @@ public class ListSE {
         }
         return count;
     }
-    public class Kidvalidate {
-        private String code;
-        private Node head;
-        // Constructor
-        public Kidvalidate (String code) {
-            this.code = code;
-            this.head = null;
-        }
+    {
+        public List<CityGenderReportDTO> getCityGenderReport(int minAge, List<Kid> children) {
+            List<CityGenderReportDTO> report = new ArrayList<>();
 
-        // Add kid to department
-        public boolean addKid(String name, int age, String code) {
-            if (this.code.equals(code)) {
-                if (Kid(name,byte age,)) { // verifica si existe el niño
-                    System.out.println("Error: Kid already exists in department.");
-                    return false;
-                } else {
-                    Node newKid = new Kid(name,byte age,);
-                    newKid.next = head;
-                    head = newKid;
-                    System.out.println("Kid added to department.");
-                    return true;
+            // Agrupar los niños por ciudad y género
+            Map<String, Map<String, Integer>> cityGenderCountMap = new HashMap<>();
+            for (Kid kid : children) {
+                if (Kid.getAge() >= minAge) {
+                    String city = kid.getCity();
+                    String gender = children.getGender();
+                    cityGenderCountMap.computeIfAbsent(city, k -> new HashMap<>());
+                    cityGenderCountMap.get(city).merge(gender, 1, Integer::sum);
                 }
-            } else {
-                System.out.println("Error: Invalid department code.");
-                return false;
             }
-        }
 
-        // Check if child already exists
-        private boolean containsKid(String name, int age) {
-           NodeKid current = head;
-            while (current != null) {
-                if (current.name.equals(name) && current.age == age) {
-                    return true;
+            // Generar la lista de CityGenderReportDTO a partir del mapa
+            for (Map.Entry<String, Map<String, Integer>> cityEntry : cityGenderCountMap.entrySet()) {
+                String city = cityEntry.getKey();
+                Map<String, Integer> genderCountMap = cityEntry.getValue();
+                List<GenderDTO> genders = new ArrayList<>();
+                int total = 0;
+                for (Map.Entry<String, Integer> genderEntry : genderCountMap.entrySet()) {
+                    String gender = genderEntry.getKey();
+                    int count = genderEntry.getValue();
+                    genders.add(new GenderDTO(gender, count));
+                    total += count;
                 }
-                current = current.next;
+                report.add(new CityGenderReportDTO(city, genders, total));
             }
-            return false;
-        }
 
-
+            return report;
         }
+    }
 
 
 }

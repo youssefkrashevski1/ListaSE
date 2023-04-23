@@ -1,5 +1,6 @@
 package co.edu.umanizales.tads.controller;
 
+import co.edu.umanizales.tads.controller.dto.CityGenderReportDTO;
 import co.edu.umanizales.tads.controller.dto.KidDTO;
 import co.edu.umanizales.tads.controller.dto.KidsByLocationDTO;
 import co.edu.umanizales.tads.controller.dto.ResponseDTO;
@@ -81,10 +82,16 @@ public class ListSEController {
                 200,kidsByLocationDTOList,
                 null), HttpStatus.OK);
     }
-    @GetMapping(path = "/Kidvalidate")
-    public ResponseEntity<ResponseDTO> getKidValidate(){
-        listSEService< ListSEService.Kidavalidate();
-        return new ResponseEntity<>(new ResponseDTO(404 "el niño ya existe",null)), HttpStatus.OK);
+
+    @GetMapping(path = "/CityGenderReportDTO")
+        @Autowired
+        private ListSEService listSEService;
+        @GetMapping("/city-gender-report")
+        public ResponseEntity<?> getCityGenderReport(@RequestParam int minAge) {
+            List<Kid> children = // Obtener la lista de niños
+                    List<CityGenderReportDTO> report = ListSE.getCityGenderReport(minAge,children);
+            return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK.value(), report, null));
+        }
     }
 
 }
