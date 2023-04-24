@@ -1,7 +1,14 @@
 package co.edu.umanizales.tads.model;
 
 import ch.qos.logback.core.joran.spi.ElementSelector;
+import co.edu.umanizales.tads.controller.dto.CityGenderReportDTO;
+import co.edu.umanizales.tads.controller.dto.GenderDTO;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Data
 public class ListSE {
@@ -115,7 +122,7 @@ public class ListSE {
         }
         return count;
     }
-    {
+
         public List<CityGenderReportDTO> getCityGenderReport(int minAge, List<Kid> children) {
             List<CityGenderReportDTO> report = new ArrayList<>();
 
@@ -147,7 +154,7 @@ public class ListSE {
 
             return report;
         }
-    }
+
 
 
 }

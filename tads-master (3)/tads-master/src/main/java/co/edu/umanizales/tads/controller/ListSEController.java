@@ -12,11 +12,8 @@ import co.edu.umanizales.tads.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,15 +80,22 @@ public class ListSEController {
                 null), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/CityGenderReportDTO")
+
+    @RestController
+    @RequestMapping("/api")
+    public class CityGenderReportController {
+
         @Autowired
         private ListSEService listSEService;
+
         @GetMapping("/city-gender-report")
-        public ResponseEntity<?> getCityGenderReport(@RequestParam int minAge) {
+        public ResponseEntity<ResponseDTO<List<CityGenderReportDTO>>> getCityGenderReport(@RequestParam int minAge) {
             List<Kid> children = // Obtener la lista de niños
-                    List<CityGenderReportDTO> report = ListSE.getCityGenderReport(minAge,children);
-            return ResponseEntity.ok(new ResponseDTO<>(HttpStatus.OK.value(), report, null));
+                    List<CityGenderReportDTO> report = listSEService.getCityGenderReport(minAge,children);
+            ResponseDTO<List<CityGenderReportDTO>> response = new ResponseDTO<>(HttpStatus.OK.value(), report, null);
+            return ResponseEntity.ok(response);
         }
     }
+
 
 }
