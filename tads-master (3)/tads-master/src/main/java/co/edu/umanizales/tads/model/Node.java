@@ -16,15 +16,15 @@ public class Node {
         private int age;
         private KidNode next;
 
+
         // Constructor
         public KidNode(String name, int age) {
             this.name = name;
             this.age = age;
             this.next = null;
+
         }
     }
-
-
 
 }
 

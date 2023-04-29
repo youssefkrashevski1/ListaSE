@@ -80,22 +80,49 @@ public class ListSEController {
                 null), HttpStatus.OK);
     }
 
-
-    @RestController
-    @RequestMapping("/api")
-    public class CityGenderReportController {
-
-        @Autowired
-        private ListSEService listSEService;
-
         @GetMapping("/city-gender-report")
         public ResponseEntity<ResponseDTO<List<CityGenderReportDTO>>> getCityGenderReport(@RequestParam int minAge) {
-            List<Kid> children = // Obtener la lista de niños
-                    List<CityGenderReportDTO> report = listSEService.getCityGenderReport(minAge,children);
+            List<Kid> kids = ListSEService.getKids(); // Obtener la lista de niños usando el servicio de niños.
+            List<CityGenderReportDTO> report = listSEService.getCityGenderReport(minAge, kids);
             ResponseDTO<List<CityGenderReportDTO>> response = new ResponseDTO<>(HttpStatus.OK.value(), report, null);
             return ResponseEntity.ok(response);
         }
+    @GetMapping("/kids/average-age")
+    public ResponseEntity<Double> getAverageKidAge() {
+        try {
+            double averageAge = ListSEService.getAverageKidAge();
+            return ResponseEntity.ok(averageAge);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+    @GetMapping("/advance/{numPositions}")
+    public ResponseEntity<String> advance(@PathVariable int numPositions) {
+        try {
+            ListSEService.advance(numPositions);
+            return ResponseEntity.ok("El niño avanzó " + numPositions + " posiciones en la lista.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+    @GetMapping("/losePositions/{numPositions}")
+    public ResponseEntity<String> losePositions(@PathVariable int numPositions) {
+        try {
+            ListSEService.losePositions(numPositions);
+            return ResponseEntity.ok("El niño perdió " + numPositions + " posiciones en la lista.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+    @GetMapping("/moveKids/{letter}")
+    public ResponseEntity<String> moveKidsToEnd(@PathVariable char letter) {
+        try {
+            moveKidsToEnd(letter);
+            return ResponseEntity.ok("Kids with name starting with " + letter + " moved to end of list.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
+    }
 
-}

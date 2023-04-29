@@ -123,15 +123,15 @@ public class ListSE {
         return count;
     }
 
-        public List<CityGenderReportDTO> getCityGenderReport(int minAge, List<Kid> children) {
+        public List<CityGenderReportDTO> getCityGenderReport(int minAge, List<Kid> kids) {
             List<CityGenderReportDTO> report = new ArrayList<>();
 
             // Agrupar los niños por ciudad y género
             Map<String, Map<String, Integer>> cityGenderCountMap = new HashMap<>();
-            for (Kid kid : children) {
+            for (Kid kid : kids) {
                 if (Kid.getAge() >= minAge) {
                     String city = kid.getCity();
-                    String gender = children.getGender();
+                    String gender = kids.getgender();
                     cityGenderCountMap.computeIfAbsent(city, k -> new HashMap<>());
                     cityGenderCountMap.get(city).merge(gender, 1, Integer::sum);
                 }
@@ -155,6 +155,199 @@ public class ListSE {
             return report;
         }
 
+    public void addKid(Kid kid) {
+        if (head == null) {
+            head = kid;
+        } else {
+            Kid current = head.getData();
+            Kid prev = null;
+            while (current != null) {
+                if (current.isBoy && kid.isBoy) {
+                    // add boy to the beginning of the list
+                    kid.setNext(head.getData());
+                    head = kid;
+                    return;
+                } else if (!current.isBoy && !kid.isBoy) {
+                    // add girl to the end of the list
+                    if (current.getNext() == null) {
+                        current.setNext(kid);
+                        return;
+                    }
+                }
+                prev = current;
+                current = current.getNext();
+            }
+            // add girl to the end of the list if there were no girls in the list
+            prev.setNext(kid);
+        }
+    }
+    public  void interleaveBoyGirl() {
+        if (head == null || head.getNext() == null) {
+            return; // nothing to interleave
+        }
 
+        Node boyHead = null;
+        Node girlHead = null;
+        Node boyTail = null;
+        Node girlTail = null;
+        Node current = head;
+        boolean isBoy = true;
+
+        // split the list into two separate lists for boys and girls
+        while (current != null) {
+            if (isBoy) {
+                if (boyHead == null) {
+                    boyHead = current;
+                    boyTail = current;
+                } else {
+                    boyTail.setNext(current);
+                    boyTail = current;
+                }
+            } else {
+                if (girlHead == null) {
+                    girlHead = current;
+                    girlTail = current;
+                } else {
+                    girlTail.setNext(current);
+                    girlTail = current;
+                }
+            }
+            current = current.getNext();
+            isBoy = !isBoy; // switch between boy and girl
+        }
+
+        // merge the boy and girl lists by alternating between them
+        boyTail.setNext(girlHead);
+        girlTail.setNext(null); // terminate the new list
+
+        Node boyCurrent = boyHead;
+        Node girlCurrent = girlHead;
+        Node newHead = boyHead;
+
+        while (boyCurrent != null && girlCurrent != null) {
+            Node nextBoy = boyCurrent.getNext();
+            Node nextGirl = girlCurrent.getNext();
+            boyCurrent.setNext(girlCurrent);
+            girlCurrent.setNext(nextBoy);
+            boyCurrent = nextBoy;
+            girlCurrent = nextGirl;
+        }
+
+        head = newHead;
+    }
+    public  double getAverageKidAge() throws EmptyListException {
+        if (head == null) {
+            throw new EmptyListException("La lista está vacía.");
+        }
+
+        int sum = 0;
+        int count = 0;
+        Node current = head;
+
+        while (current != null) {
+            if (current.getData() != null) {
+                Kid kid = (Kid) current.getData();
+                sum += kid.getAge();
+                count++;
+            }
+            current = current.getNext();
+        }
+
+        if (count == 0) {
+            throw new EmptyListException("La lista no contiene niños..");
+        }
+
+        return (double) sum / count;
+    }
+    public  void advance(int numPositions) throws Exception {
+        Node current = head;
+        int count = 0;
+        while (current != null && count < numPositions) {
+            current = current.getNext();
+            count++;
+        }
+        if (count < numPositions) {
+            throw new Exception("No se puede avanzar " + numPositions + " posiciones, la lista solo tiene " + count + " elementos.");
+        }
+        head = current;
+    }
+    public void losePositions(int numPositions) throws Exception {
+        Node current = head;
+        Node prev = null;
+        int count = 0;
+        while (current != null && count < numPositions) {
+            prev = current;
+            current = current.getNext();
+            count++;
+        }
+        if (count < numPositions) {
+            throw new Exception("No se puede perder " + numPositions + " posiciones, la lista solo tiene " + count + " elementos.");
+        }
+        if (prev != null) {
+            prev.setNext(current.getNext());
+        } else {
+            head = current.getNext();
+        }
+    }
+    public void addKid(Kid kid) throws Kid.InvalidAgeException {
+        if (kid.getAge() < 0 || kid.getAge() > 18) {
+            throw new Kid.InvalidAgeException("Invalid age: " + kid.getAge());
+        }
+
+        if (head == null) {
+            head = kid;
+        } else {
+            Kid node = head;
+            while (node.getNext() != null) {
+                node = node.getNext();
+            }
+            node.setNext(kid);
+        }
+    }
+
+    public void generateAgeReport() {
+        int[] ageCounts = new int[19];
+        Kid node = head.getData();
+
+        System.out.println("Age Report:");
+        for (int i = 0; i < ageCounts.length; i++) {
+            if (ageCounts[i] > 0) {
+                System.out.println("Age " + i + ": " + ageCounts[i] + " kids");
+            }
+        }
+    }
+    public void moveKidsToEnd(char letter) throws Exception {
+        if (head == null) {
+            throw new Exception("la lista esta vacia");
+        }
+        Kid prev = null;
+        Kid curr = head.getData();
+        Kid end = null;
+        while (curr != null) {
+            if (curr.getName().charAt(0) == letter) {
+                if (prev == null) {
+                    head = curr.getNext();
+                } else {
+                    prev.setNext(curr.getNext());
+                }
+                if (end == null) {
+                    end = curr;
+                } else {
+                    end.setNext(curr);
+                    end = curr;
+                }
+                curr = curr.getNext();
+                end.setNext(null);
+            } else {
+                prev = curr;
+                curr = curr.getNext();
+            }
+        }
+        if (end == null) {
+            throw new Exception("No hay niños con nombre que comiencen con " + letter + " found");
+        }
+    }
 
 }
+
+
