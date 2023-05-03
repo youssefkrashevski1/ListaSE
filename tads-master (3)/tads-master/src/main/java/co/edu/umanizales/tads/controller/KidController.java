@@ -50,14 +50,10 @@ public class KidController {
     }
     @GetMapping("/age-report")
     public ResponseEntity<String> generateAgeReport() {
-        try {
-            ListSE.addKid(new Kid());
-        } catch (Kid.InvalidAgeException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        ListSE.addKid(new Kid());
 
         int[] ageCounts = new int[19];
-        Kid node = ageCounts.GetHead();
+        Kid node = ageCounts.Get();
         while (node != null) {
             ageCounts[node.getAge()]++;
             node = node.getNext();
@@ -69,7 +65,6 @@ public class KidController {
                 report.append("Age ").append(i).append(": ").append(ageCounts[i]).append(" kids\n");
             }
         }
-
         return new ResponseEntity<>(report.toString(), HttpStatus.OK);
     }
 }

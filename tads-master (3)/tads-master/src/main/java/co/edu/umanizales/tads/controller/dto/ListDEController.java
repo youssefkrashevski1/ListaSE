@@ -160,8 +160,75 @@ public class ListDEController {
                     null), HttpStatus.OK);
         }
     }
+    @GetMapping(path = "/delete_node")
+    public ResponseEntity<ResponseDTO> deleteNode() {
+        try {
+            ListDE petsList = listDEService.getPetsList(); // Supongamos que así obtienes la lista de mascotas
+            NodeDE firstNode = petsList.getFirstNode();
+            NodeDE lastNode = petsList.getLastNode();
+            NodeDE nodeToDelete = null;
 
+            // Aquí puedes agregar tu lógica para obtener el nodo que deseas eliminar de la lista
+
+            if (nodeToDelete == null) {
+                throw new Exception("No se encontró ningún nodo para eliminar");
+            } else if (nodeToDelete == firstNode) {
+                petsList.deleteFirst();
+            } else if (nodeToDelete == lastNode) {
+                petsList.deleteLast();
+            } else {
+                petsList.deleteNodeDE(nodeToDelete);
+            }
+
+            return new ResponseEntity<>(new ResponseDTO(
+                    200,"Nodo eliminado exitosamente",
+                    null), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseDTO(
+                    400,e.getMessage(),
+                    null), HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping(path = "/remove_node_at_position")
+    public ResponseEntity<ResponseDTO> removeNodeAtPosition() {
+        ListDE petList = listDEService.getPets().getPets();
+
+        try {
+            petList.removeNodeAtPosition(5); // Se eliminara el nodo en la posicion 5, puedes cambiar el valor si lo necesitas.
+            return new ResponseEntity<>(new ResponseDTO(
+                    200,"El nodo ha sido eliminado exitosamente",
+                    null), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseDTO(
+                    500, "Error al eliminar el nodo: " + e.getMessage(),
+                    null), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping(path = "/age_range_report")
+    public ResponseEntity<ResponseDTO> generateAgeRangeReport() {
+        try {
+            String report = listDEService.GetPets.generateAgeRangeReport();
+            return new ResponseEntity<>(new ResponseDTO(200, report, null), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseDTO(400, e.getMessage(), null), HttpStatus.BAD_REQUEST);
+        }
+    }
+    public ResponseEntity<ResponseDTO> movePetsWithNameStartingWith(@PathVariable char letter) {
+        {
+            try {
+                listDEService.movePetsWithNameStartingWith(letter);
+                return new ResponseEntity<>(new ResponseDTO(
+                        200, "Se han movido los pets cuyo nombre empieza con " + letter + " al final de la lista",
+                        null), HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(new ResponseDTO(
+                        404, "No se encontraron pets cuyo nombre empieza con " + letter,
+                        null), HttpStatus.NOT_FOUND);
+            }
+        }
+    }
 }
+
 
 
 

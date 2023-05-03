@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class ListSE {
-    private Node head;
+    private static Node head;
     private int size;
 
     /*
@@ -60,21 +60,21 @@ public class ListSE {
     }
 
     public void invert() {
-        if (this.head != null) {
+        if (head != null) {
             ListSE listCp = new ListSE();
-            Node temp = this.head;
+            Node temp = head;
             while (temp != null) {
                 listCp.addToStart(temp.getData());
                 temp = temp.getNext();
             }
-            this.head = listCp.getHead();
+            head = listCp.getHead();
         }
     }
 
     public void orderBoysToStart() {
-        if (this.head != null) {
+        if (head != null) {
             ListSE listCp = new ListSE();
-            Node temp = this.head;
+            Node temp = head;
             while (temp != null) {
                 if (temp.getData().getGender() == 'M') {
                     listCp.addToStart(temp.getData());
@@ -84,19 +84,23 @@ public class ListSE {
 
                 temp = temp.getNext();
             }
-            this.head = listCp.getHead();
+            head = listCp.getHead();
         }
     }
 
+    public Node getHead() {
+        return null;
+    }
+
     public void changeExtremes() {
-        if (this.head != null && this.head.getNext() != null) {
-            Node temp = this.head;
+        if (head != null && head.getNext() != null) {
+            Node temp = head;
             while (temp.getNext() != null) {
                 temp = temp.getNext();
             }
             //temp está en el último
-            Kid copy = this.head.getData();
-            this.head.setData(temp.getData());
+            Kid copy = head.getData();
+            head.setData(temp.getData());
             temp.setData(copy);
         }
 
@@ -104,8 +108,8 @@ public class ListSE {
 
     public int getCountKidsByLocationCode(String code) {
         int count = 0;
-        if (this.head != null) {
-            Node temp = this.head;
+        if (head != null) {
+            Node temp = head;
             while (temp != null) {
                 if (temp.getData().getLocation().getCode().equals(code)) {
                     count++;
@@ -118,7 +122,7 @@ public class ListSE {
 
     public void getReportKidsByLocationGendersByAge(byte age, CityGenderReportDTO report){
         if(head !=null){
-            Node temp = this.head;
+            Node temp = head;
             while(temp!=null){
                 if(temp.getData().getAge()>age){
                     report.updateQuantity(
@@ -130,7 +134,7 @@ public class ListSE {
         }
     }
 
-    public void addKid(Kid kid) {
+    public static void addKid(Kid kid) {
         if (head == null) {
         } else {
             Kid current = head.getData();

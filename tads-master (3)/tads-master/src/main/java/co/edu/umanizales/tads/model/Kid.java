@@ -2,7 +2,6 @@ package co.edu.umanizales.tads.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.stereotype.Service;
 
 @Data
 @AllArgsConstructor
@@ -15,6 +14,9 @@ public class Kid {
     boolean isBoy;
     private Kid next;
     private Kid head;
+
+    public Kid() {
+    }
 
     public static class InvalidAgeException extends Exception {
         public InvalidAgeException(String message) {

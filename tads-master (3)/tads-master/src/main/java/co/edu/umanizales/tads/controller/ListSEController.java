@@ -5,7 +5,6 @@ import co.edu.umanizales.tads.controller.dto.KidDTO;
 import co.edu.umanizales.tads.controller.dto.KidsByLocationDTO;
 import co.edu.umanizales.tads.controller.dto.ResponseDTO;
 import co.edu.umanizales.tads.model.Kid;
-import co.edu.umanizales.tads.model.ListSE;
 import co.edu.umanizales.tads.model.Location;
 import co.edu.umanizales.tads.service.ListSEService;
 import co.edu.umanizales.tads.service.LocationService;
@@ -57,9 +56,8 @@ public class ListSEController {
                    null), HttpStatus.OK);
        }
        listSEService.getKids().add(
-               new Kid(kidDTO.getIdentification(),
-                       kidDTO.getName(), kidDTO.getAge(),
-                       kidDTO.getGender(), location));
+               new Kid(
+               ));
         return new ResponseEntity<>(new ResponseDTO(
                 200,"Se ha adicionado el petacón",
                 null), HttpStatus.OK);

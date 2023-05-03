@@ -1,5 +1,6 @@
 package co.edu.umanizales.tads.model;
 
+import co.edu.umanizales.tads.service.ListDEService;
 import lombok.Data;
 @Data
 public class ListDE {
@@ -244,6 +245,159 @@ public class ListDE {
     }
 
     public void deleteNodeDE(NodeDE current) {
+    }
+    public void movePetForward(NodeDE petNode, int numPositions) throws IllegalArgumentException {
+        if (petNode == null) {
+            throw new IllegalArgumentException("Pet node cannot be null.");
+        }
+        if (numPositions < 0) {
+            throw new IllegalArgumentException("Number of positions to move forward cannot be negative.");
+        }
+        for (int i = 0; i < numPositions; i++) {
+            if (petNode.getNext() == null) {
+                throw new IllegalArgumentException("Cannot move pet forward by " + numPositions + " positions. End of list reached.");
+            }
+            petNode = petNode.getNext();
+        }
+    }
+
+    public NodeDE getFirstNoDE() {
+        return null;
+    }
+
+    public NodeDE getLastNode() {
+        return null;
+    }
+
+    public void deleteFirst() {
+    }
+
+    public void deleteLast() {
+    }
+
+    public NodeDE getFirstNode() {
+        return null;
+    }
+    public void removeNodeAtPosition(int position) throws Exception {
+        if (head == null) {
+            throw new Exception("The list is empty");
+        }
+
+        NodeDE currentNode = head;
+        int currentPosition = 1;
+
+        while (currentNode != null && currentPosition != position) {
+            currentNode = currentNode.getNext();
+            currentPosition++;
+        }
+
+        if (currentNode == null) {
+            throw new Exception("The position is out of range");
+        }
+
+        if (currentNode == head) {
+            head = currentNode.getNext();
+        }
+
+        if (currentNode == tail) {
+            tail = currentNode.getPrevious();
+        }
+
+        if (currentNode.getPrevious() != null) {
+            currentNode.getPrevious().setNext(currentNode.getNext());
+        }
+
+        if (currentNode.getNext() != null) {
+            currentNode.getNext().setPrevious(currentNode.getPrevious());
+        }
+
+        size--;
+    }
+    public ListDE getPets() {
+        ListDE pets = null;
+        return null;
+    }
+    public String generateAgeRangeReport(ListDEService petList) throws AgeOutOfRangeException {
+        // Define the age ranges and initialize counters for each range
+        final int[] AGE_RANGES = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
+        int[] ageCount = new int[AGE_RANGES.length + 1]; // the last element counts all pets older than 19
+
+        // Iterate over the pet list and count the number of pets in each age range
+        NodeDE current = petList.getHead();
+        while (current != null) {
+            int age = current.getData().getAge();
+            if (age < AGE_RANGES[0] || age > AGE_RANGES[AGE_RANGES.length - 1]) {
+                ageCount[ageCount.length - 1]++; // pet is older than 19
+            } else {
+                for (int i = 0; i < AGE_RANGES.length; i++) {
+                    if (age <= AGE_RANGES[i]) {
+                        ageCount[i]++;
+                        break;
+                    }
+                }
+            }
+            current = current.getNext();
+        }
+
+        // Generate the report string
+        StringBuilder report = new StringBuilder();
+        for (int i = 0; i < AGE_RANGES.length; i++) {
+            int startAge = AGE_RANGES[i];
+            int endAge = (i == AGE_RANGES.length - 1) ? Integer.MAX_VALUE : AGE_RANGES[i+1] - 1;
+            int count = ageCount[i];
+            report.append(String.format("Pets between %d and %d years old: %d\n", startAge, endAge, count));
+        }
+        report.append(String.format("Pets older than %d years: %d\n", AGE_RANGES[AGE_RANGES.length - 1], ageCount[AGE_RANGES.length]));
+
+        // Check for age ranges with no pets and throw an exception
+        for (int count : ageCount) {
+            if (count == 0) {
+                throw new AgeOutOfRangeException("No pets found in age range.");
+            }
+        }
+
+        return report.toString();
+    }
+
+    public static class AgeOutOfRangeException extends Exception {
+        public AgeOutOfRangeException(String message) {
+            super(message);
+        }
+    }
+    public void movePetsWithNameStartingWith(char letter) throws Exception {
+        NodeDE current = head;
+        NodeDE last = tail;
+
+        while (current != null) {
+            if (current.getData().getName().charAt(0) == letter) {
+                // move the node to the end
+                if (current == head) {
+                    head = head.getNext();
+                    if (head != null) {
+                        head.setPrev(null);
+                    }
+                } else {
+                    current.getPrev().setNext(current.getNext());
+                    if (current.getNext() != null) {
+                        current.getNext().setPrev(current.getPrev());
+                    }
+                }
+                current.setPrev(last);
+                current.setNext(null);
+                if (last != null) {
+                    last.setNext(current);
+                }
+                last = current;
+                current = head;
+            } else {
+                current = current.getNext();
+            }
+        }
+
+        if (last == null) {
+            // no pets were moved, so the letter was not found
+            throw new Exception("No pets found with name starting with " + letter);
+        }
     }
 
 }

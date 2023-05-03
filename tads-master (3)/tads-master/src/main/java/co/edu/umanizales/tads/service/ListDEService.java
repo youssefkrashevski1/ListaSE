@@ -25,4 +25,11 @@ public class ListDEService {
     public NodeDE getHead() {
         return null;
     }
+
+    public ListDE getPetsList() {
+        return null;
+    }
+
+    public void movePetsWithNameStartingWith(char letter) {
+    }
 }
