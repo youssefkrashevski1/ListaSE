@@ -4,12 +4,12 @@ import lombok.Data;
 
 @Data
 public class Node {
-    public Node prev;
-    public int value;
+    private Node prev;
+    private int value;
     private Kid data;
     private Node next;
 
-    public Node(Pet data) {
+    public Node(Kid data) {
         this.data = data;
     }
 

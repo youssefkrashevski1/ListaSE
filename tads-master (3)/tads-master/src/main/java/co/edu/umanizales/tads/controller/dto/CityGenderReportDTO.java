@@ -1,5 +1,6 @@
 package co.edu.umanizales.tads.controller.dto;
 
+import co.edu.umanizales.tads.service.LocationService;
 import jdk.javadoc.doclet.Taglet;
 import lombok.AllArgsConstructor;
 import lombok.Data;

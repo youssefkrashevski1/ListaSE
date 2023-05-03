@@ -132,7 +132,6 @@ public class ListSE {
 
     public void addKid(Kid kid) {
         if (head == null) {
-            head = kid;
         } else {
             Kid current = head.getData();
             Kid prev = null;
@@ -264,21 +263,6 @@ public class ListSE {
             head = current.getNext();
         }
     }
-    public void addKid(Kid kid) throws Kid.InvalidAgeException {
-        if (kid.getAge() < 0 || kid.getAge() > 18) {
-            throw new Kid.InvalidAgeException("Invalid age: " + kid.getAge());
-        }
-
-        if (head == null) {
-            head = kid;
-        } else {
-            Kid node = head.getData();
-            while (node.getNext() != null) {
-                node = node.getNext();
-            }
-            node.setNext(kid);
-        }
-    }
 
     public void generateAgeReport() {
         int[] ageCounts = new int[19];
@@ -298,11 +282,7 @@ public class ListSE {
         Kid end = null;
         while (curr != null) {
             if (curr.getName().charAt(0) == letter) {
-                if (prev == null) {
-                    head = curr.getNext();
-                } else {
-                    prev.setNext(curr.getNext());
-                }
+
                 if (end == null) {
                     end = curr;
                 } else {

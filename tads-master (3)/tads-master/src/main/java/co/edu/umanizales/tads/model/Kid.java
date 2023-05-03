@@ -15,6 +15,7 @@ public class Kid {
     boolean isBoy;
     private Kid next;
     private Kid head;
+
     public static class InvalidAgeException extends Exception {
         public InvalidAgeException(String message) {
             super(message);

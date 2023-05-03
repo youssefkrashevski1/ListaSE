@@ -23,7 +23,8 @@ public class ListDE {
         }
         size++;
     }
-    private void concat(ListDE girlList) {
+
+    public void Concat() {
     }
 
     // Constructor vacío
@@ -93,7 +94,7 @@ public class ListDE {
             current = current.getNext();
             i++;
         }
-        current.value = node.value;
+        current.value = node.getValue();
     }
 
     // Invertir la lista
@@ -124,13 +125,16 @@ public class ListDE {
         }
         System.out.println();
     }
-    public void addPetToStartAndEnd(NodeDE head, Pet malePet, Pet femalePet) throws Exception {
+
+    public void addPetToStartAndEnd() throws Exception {
         if (head == null) {
             throw new Exception("The linked list is empty.");
         }
 
-        NodeDE newNode1 = new NodeDE(malePet);
-        NodeDE newNode2 = new NodeDE(femalePet);
+        Pet malePet = null;
+        NodeDE newNode1 = new NodeDE(null);
+        Pet femalePet = null;
+        NodeDE newNode2 = new NodeDE(null);
 
         NodeDE current = head;
         while (current.getNext() != null) {
@@ -144,6 +148,7 @@ public class ListDE {
         current.setNext(newNode2);
         newNode2.setPrev(current);
     }
+
     public void interleavePets() throws Exception {
         if (head == null || head.getNext() == null) {
             throw new Exception("List is empty or contains only one element");
@@ -179,6 +184,7 @@ public class ListDE {
             current = current.getNext();
         }
     }
+
     public void deletePetsByAge(NodeDE head, byte ageToDelete) throws Exception {
         if (head == null) {
             throw new Exception("List is empty");
@@ -208,42 +214,38 @@ public class ListDE {
         }
     }
 
-        public double getAverageAge() throws Exception {
-            if (head == null) {
-                throw new Exception("The list is empty.");
-            }
-
-            NodeDE current = head;
-            int totalAge = 0;
-            int count = 0;
-
-            while (current != null) {
-                if (current.getPet() == null) {
-                    throw new Exception("The list contains a node with null pet.");
-                }
-                totalAge += current.getPet().getAge();
-                count++;
-                current = current.getNext();
-            }
-
-            if (count == 0) {
-                throw new Exception("The list is empty.");
-            }
-
-            return (double) totalAge / count;
+    public double getAverageAge() throws Exception {
+        if (head == null) {
+            throw new Exception("The list is empty.");
         }
-    public void getReportKidsByLocationGendersByAge(byte age, ReporPetLocationGenderDTO report){
-        if(head !=null){
-            NodeDE temp = this.head;
-            while(temp!=null){
-                if(temp.getData().getAge()>age){
-                    report.updateQuantity(
-                            temp.getData().getLocation().getName(),
-                            temp.getData().getGender());
-                }
-                temp = temp.getNext();
+
+        NodeDE current = head;
+        int totalAge = 0;
+        int count = 0;
+
+        while (current != null) {
+            if (current.getPet() == null) {
+                throw new Exception("The list contains a node with null pet.");
             }
+            totalAge += current.getPet().getAge();
+            count++;
+            current = current.getNext();
         }
+
+        if (count == 0) {
+            throw new Exception("The list is empty.");
+        }
+
+        return (double) totalAge / count;
     }
+
+    public boolean isEmpty() {
+        return false;
+    }
+
+    public void deleteNodeDE(NodeDE current) {
+    }
+
 }
+
 
