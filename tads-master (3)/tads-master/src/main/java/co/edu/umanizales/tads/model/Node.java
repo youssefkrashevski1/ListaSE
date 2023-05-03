@@ -4,24 +4,21 @@ import lombok.Data;
 
 @Data
 public class Node {
+    public Node prev;
+    public int value;
     private Kid data;
     private Node next;
 
-    public Node(Kid data) {
+    public Node(Pet data) {
         this.data = data;
     }
 
     private static class KidNode {
-        private String name;
-        private int age;
-        private KidNode next;
 
 
         // Constructor
         public KidNode(String name, int age) {
-            this.name = name;
-            this.age = age;
-            this.next = null;
+            KidNode next = null;
 
         }
     }

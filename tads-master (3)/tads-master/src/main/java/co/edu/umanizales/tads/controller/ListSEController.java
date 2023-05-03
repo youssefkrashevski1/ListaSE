@@ -80,18 +80,21 @@ public class ListSEController {
                 null), HttpStatus.OK);
     }
 
-        @GetMapping("/city-gender-report")
-        public ResponseEntity<ResponseDTO<List<CityGenderReportDTO>>> getCityGenderReport(@RequestParam int minAge) {
-            List<Kid> kids = ListSEService.getKids(); // Obtener la lista de niños usando el servicio de niños.
-            List<CityGenderReportDTO> report = listSEService.getCityGenderReport(minAge, kids);
-            ResponseDTO<List<CityGenderReportDTO>> response = new ResponseDTO<>(HttpStatus.OK.value(), report, null);
-            return ResponseEntity.ok(response);
-        }
+    @GetMapping(path = "/kidsbylocationgenders/{age}")
+    public ResponseEntity<ResponseDTO> getReportKisLocationGenders(@PathVariable byte age) {
+        CityGenderReportDTO report =
+                new CityGenderReportDTO(locationService.getLocationsByCodeSize(8));
+        listSEService.getKids()
+                .getReportKidsByLocationGendersByAge(age,report);
+        return new ResponseEntity<>(new ResponseDTO(
+                200,report,
+                null), HttpStatus.OK);
+    }
     @GetMapping("/kids/average-age")
     public ResponseEntity<Double> getAverageKidAge() {
         try {
-            double averageAge = ListSEService.getAverageKidAge();
-            return ResponseEntity.ok(averageAge);
+            ResponseEntity<Double> averageAge = getAverageKidAge();
+            return ResponseEntity.ok(averageAge.getBody());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -99,7 +102,7 @@ public class ListSEController {
     @GetMapping("/advance/{numPositions}")
     public ResponseEntity<String> advance(@PathVariable int numPositions) {
         try {
-            ListSEService.advance(numPositions);
+           advance(numPositions);
             return ResponseEntity.ok("El niño avanzó " + numPositions + " posiciones en la lista.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -108,7 +111,7 @@ public class ListSEController {
     @GetMapping("/losePositions/{numPositions}")
     public ResponseEntity<String> losePositions(@PathVariable int numPositions) {
         try {
-            ListSEService.losePositions(numPositions);
+            losePositions(numPositions);
             return ResponseEntity.ok("El niño perdió " + numPositions + " posiciones en la lista.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

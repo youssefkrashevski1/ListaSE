@@ -15,8 +15,8 @@ import java.util.List;
 @RequestMapping("/kids")
 public class KidController {
 
-    private List<Kid> boysList = new ArrayList<>();
-    private List<Kid> girlsList = new ArrayList<>();
+    private final List<Kid> boysList = new ArrayList<>();
+    private final List<Kid> girlsList = new ArrayList<>();
 
     @PostMapping
     public ResponseEntity<Void> addKid(@RequestBody Kid kid) {
@@ -41,7 +41,7 @@ public class KidController {
     @PostMapping("/interleave-boy-girl")
     public ResponseEntity<Void> interleaveBoyGirl() {
         try {
-            ListSE.interleaveBoyGirl();
+           interleaveBoyGirl();
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             // handle any exceptions here
@@ -73,7 +73,7 @@ public class KidController {
         return new ResponseEntity<>(report.toString(), HttpStatus.OK);
     }
 }
-    }
+
 
 
 

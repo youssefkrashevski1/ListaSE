@@ -1,14 +1,7 @@
 package co.edu.umanizales.tads.model;
 
-import ch.qos.logback.core.joran.spi.ElementSelector;
 import co.edu.umanizales.tads.controller.dto.CityGenderReportDTO;
-import co.edu.umanizales.tads.controller.dto.GenderDTO;
 import lombok.Data;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Data
 public class ListSE {
@@ -123,37 +116,19 @@ public class ListSE {
         return count;
     }
 
-        public List<CityGenderReportDTO> getCityGenderReport(int minAge, List<Kid> kids) {
-            List<CityGenderReportDTO> report = new ArrayList<>();
-
-            // Agrupar los niños por ciudad y género
-            Map<String, Map<String, Integer>> cityGenderCountMap = new HashMap<>();
-            for (Kid kid : kids) {
-                if (Kid.getAge() >= minAge) {
-                    String city = kid.getCity();
-                    String gender = kids.getgender();
-                    cityGenderCountMap.computeIfAbsent(city, k -> new HashMap<>());
-                    cityGenderCountMap.get(city).merge(gender, 1, Integer::sum);
+    public void getReportKidsByLocationGendersByAge(byte age, CityGenderReportDTO report){
+        if(head !=null){
+            Node temp = this.head;
+            while(temp!=null){
+                if(temp.getData().getAge()>age){
+                    report.updateQuantity(
+                            temp.getData().getLocation().getName(),
+                            temp.getData().getGender());
                 }
+                temp = temp.getNext();
             }
-
-            // Generar la lista de CityGenderReportDTO a partir del mapa
-            for (Map.Entry<String, Map<String, Integer>> cityEntry : cityGenderCountMap.entrySet()) {
-                String city = cityEntry.getKey();
-                Map<String, Integer> genderCountMap = cityEntry.getValue();
-                List<GenderDTO> genders = new ArrayList<>();
-                int total = 0;
-                for (Map.Entry<String, Integer> genderEntry : genderCountMap.entrySet()) {
-                    String gender = genderEntry.getKey();
-                    int count = genderEntry.getValue();
-                    genders.add(new GenderDTO(gender, count));
-                    total += count;
-                }
-                report.add(new CityGenderReportDTO(city, genders, total));
-            }
-
-            return report;
         }
+    }
 
     public void addKid(Kid kid) {
         if (head == null) {
@@ -165,7 +140,6 @@ public class ListSE {
                 if (current.isBoy && kid.isBoy) {
                     // add boy to the beginning of the list
                     kid.setNext(head.getData());
-                    head = kid;
                     return;
                 } else if (!current.isBoy && !kid.isBoy) {
                     // add girl to the end of the list
@@ -178,7 +152,7 @@ public class ListSE {
                 current = current.getNext();
             }
             // add girl to the end of the list if there were no girls in the list
-            prev.setNext(kid);
+
         }
     }
     public  void interleaveBoyGirl() {
@@ -222,7 +196,6 @@ public class ListSE {
 
         Node boyCurrent = boyHead;
         Node girlCurrent = girlHead;
-        Node newHead = boyHead;
 
         while (boyCurrent != null && girlCurrent != null) {
             Node nextBoy = boyCurrent.getNext();
@@ -233,7 +206,7 @@ public class ListSE {
             girlCurrent = nextGirl;
         }
 
-        head = newHead;
+
     }
     public  double getAverageKidAge() throws EmptyListException {
         if (head == null) {
@@ -284,8 +257,10 @@ public class ListSE {
             throw new Exception("No se puede perder " + numPositions + " posiciones, la lista solo tiene " + count + " elementos.");
         }
         if (prev != null) {
+            assert current != null;
             prev.setNext(current.getNext());
         } else {
+            assert current != null;
             head = current.getNext();
         }
     }
@@ -297,7 +272,7 @@ public class ListSE {
         if (head == null) {
             head = kid;
         } else {
-            Kid node = head;
+            Kid node = head.getData();
             while (node.getNext() != null) {
                 node = node.getNext();
             }
@@ -307,8 +282,6 @@ public class ListSE {
 
     public void generateAgeReport() {
         int[] ageCounts = new int[19];
-        Kid node = head.getData();
-
         System.out.println("Age Report:");
         for (int i = 0; i < ageCounts.length; i++) {
             if (ageCounts[i] > 0) {

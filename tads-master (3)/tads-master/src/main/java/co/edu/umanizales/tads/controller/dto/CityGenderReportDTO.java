@@ -1,5 +1,6 @@
 package co.edu.umanizales.tads.controller.dto;
 
+import jdk.javadoc.doclet.Taglet;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,5 +14,6 @@ public class CityGenderReportDTO {
         private int total;
 
 
-
+    public void updateQuantity(String name, char gender) {
+    }
 }
