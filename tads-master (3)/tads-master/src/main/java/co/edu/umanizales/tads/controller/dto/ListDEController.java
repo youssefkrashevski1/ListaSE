@@ -1,7 +1,6 @@
 package co.edu.umanizales.tads.controller.dto;
 
 import co.edu.umanizales.tads.model.ListDE;
-import co.edu.umanizales.tads.model.Location;
 import co.edu.umanizales.tads.model.NodeDE;
 import co.edu.umanizales.tads.model.Pet;
 import co.edu.umanizales.tads.service.ListDEService;
@@ -58,8 +57,8 @@ public class ListDEController {
         }
     }
     @GetMapping(path = "/interleave_pets")
-    public ResponseEntity<ResponseDTO> interleavePets() {
-        ListDE pets = listDEService.getPets();
+    public ResponseEntity<ResponseDTO> interleavePets() throws Exception {
+        ListDE pets = listDEService.getPets().interleavePets();
         if (pets == null || ((ListDE) pets).getHead() == null) {
             return new ResponseEntity<>(new ResponseDTO(
                     404, "Lista vacía o sin elementos", null), HttpStatus.NOT_FOUND);
@@ -77,9 +76,10 @@ public class ListDEController {
     }
     @GetMapping(path = "/delete_pets_by_age")
     public ResponseEntity<ResponseDTO> deletePetsByAge() {
+        listDEService.getPets().deletePetsByAge();
         try {
             // Get the list of pets from the service
-            ListDE list = listDEService.getPets();
+            ListDE list = listDEService.getPets().deletePetsByAge();
 
             // Check if the list is empty
             if (list.isEmpty()) {
@@ -114,7 +114,7 @@ public class ListDEController {
                 if (pet != null) {
                     byte age = pet.getAge();
                     if (age == minAge || age == maxAge) {
-                        list.deleteNodeDE(current);
+                        list.deleteNodeDE();
                         deleted = true;
                     }
                 }
@@ -162,7 +162,8 @@ public class ListDEController {
         }
     }
     @GetMapping(path = "/delete_node")
-    public ResponseEntity<ResponseDTO> deleteNode() {
+    public ResponseEntity<ResponseDTO> deleteNodeDE() {
+        listDEService.getPets().deleteNodeDE();
         try {
             ListDE petsList = listDEService.getPetsList(); // Supongamos que así obtienes la lista de mascotas
             NodeDE firstNode = petsList.getFirstNode();
@@ -178,7 +179,7 @@ public class ListDEController {
             } else if (nodeToDelete == lastNode) {
                 petsList.deleteLast();
             } else {
-                petsList.deleteNodeDE(nodeToDelete);
+                petsList.deleteNodeDE();
             }
 
             return new ResponseEntity<>(new ResponseDTO(
@@ -193,7 +194,6 @@ public class ListDEController {
     @GetMapping(path = "/remove_node_at_position")
     public ResponseEntity<ResponseDTO> removeNodeAtPosition() {
         ListDE petList = listDEService.getPets().getPets();
-
         try {
             petList.removeNodeAtPosition(5); // Se eliminara el nodo en la posicion 5, puedes cambiar el valor si lo necesitas.
             return new ResponseEntity<>(new ResponseDTO(
@@ -206,7 +206,13 @@ public class ListDEController {
         }
     }
     @GetMapping(path = "/age_range_report")
-    public ResponseEntity<ResponseDTO> generateAgeRangeReport() {
+    public ResponseEntity<ResponseDTO> generateAgeRangeReport() throws ListDE.AgeOutOfRangeException {
+        listDEService.getPets().generateAgeRangeReport();
+        try {
+            listDEService.getPets().generateAgeRangeReport();
+        } catch (ListDE.AgeOutOfRangeException e) {
+            throw new RuntimeException(e);
+        }
         try {
             String report = listDEService.getPets().generateAgeRangeReport();
             return new ResponseEntity<>(new ResponseDTO(200, report, null), HttpStatus.OK);

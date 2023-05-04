@@ -149,7 +149,7 @@ public class ListDE {
         newNode2.setPrev(current);
     }
 
-    public void interleavePets() throws Exception {
+    public ListDE interleavePets() throws Exception {
         if (head == null || head.getNext() == null) {
             throw new Exception("List is empty or contains only one element");
         }
@@ -183,6 +183,7 @@ public class ListDE {
             }
             current = current.getNext();
         }
+        return null;
     }
 
     public void deletePetsByAge(NodeDE head, byte ageToDelete) throws Exception {
@@ -243,7 +244,7 @@ public class ListDE {
         return false;
     }
 
-    public void deleteNodeDE(NodeDE current) {
+    public void deleteNodeDE() {
     }
     public void movePetForward(NodeDE petNode, int numPositions) throws IllegalArgumentException {
         if (petNode == null) {
@@ -356,6 +357,10 @@ public class ListDE {
         }
 
         return report.toString();
+    }
+
+    public ListDE deletePetsByAge() {
+        return null;
     }
 
     public static class AgeOutOfRangeException extends Exception {

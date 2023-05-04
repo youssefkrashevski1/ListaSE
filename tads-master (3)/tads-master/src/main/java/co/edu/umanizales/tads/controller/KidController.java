@@ -2,16 +2,14 @@ package co.edu.umanizales.tads.controller;
 
 import co.edu.umanizales.tads.model.Kid;
 import co.edu.umanizales.tads.model.ListSE;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@RestController
 @RequestMapping("/kids")
 public class KidController {
 
@@ -40,6 +38,8 @@ public class KidController {
 
     @PostMapping("/interleave-boy-girl")
     public ResponseEntity<Void> interleaveBoyGirl() {
+        ListSEController listSEService = null;
+        listSEService.getKids().getHeaders();
         try {
            interleaveBoyGirl();
             return ResponseEntity.ok().build();
@@ -50,6 +50,7 @@ public class KidController {
     }
     @GetMapping("/age-report")
     public ResponseEntity<String> generateAgeReport() {
+
         // Crear una nueva instancia de Kid y agregarla a la lista
         ListSE.addKid(new Kid());
 

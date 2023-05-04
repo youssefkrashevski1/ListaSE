@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class KidDTO {
+
     private String identification;
     private String name;
     private byte age;

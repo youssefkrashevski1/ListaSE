@@ -17,8 +17,6 @@ public class CityGenderReportDTO {
 
     public CityGenderReportDTO(List<Location> locationsByCodeSize) {
     }
-
-
     public void updateQuantity(String name, char gender) {
     }
 }

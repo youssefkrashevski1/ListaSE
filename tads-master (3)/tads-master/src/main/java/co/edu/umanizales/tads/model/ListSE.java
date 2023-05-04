@@ -1,6 +1,7 @@
 package co.edu.umanizales.tads.model;
 
 import co.edu.umanizales.tads.controller.dto.CityGenderReportDTO;
+import co.edu.umanizales.tads.exception.ListSEException;
 import lombok.Data;
 
 @Data
@@ -211,9 +212,9 @@ public class ListSE {
 
 
     }
-    public  double getAverageKidAge() throws EmptyListException {
+    public  double getAverageKidAge() throws ListSEException {
         if (head == null) {
-            throw new EmptyListException("La lista está vacía.");
+            throw new ListSEException("La lista está vacía.");
         }
 
         int sum = 0;
@@ -230,12 +231,12 @@ public class ListSE {
         }
 
         if (count == 0) {
-            throw new EmptyListException("La lista no contiene niños..");
+            throw new ListSEException("La lista no contiene niños..");
         }
 
         return (double) sum / count;
     }
-    public  void advance(int numPositions) throws Exception {
+    public  void advance() throws Exception {
         Node current = head;
         int count = 0;
         while (current != null && count < numPositions) {
@@ -247,7 +248,7 @@ public class ListSE {
         }
         head = current;
     }
-    public void losePositions(int numPositions) throws Exception {
+    public void losePositions() throws Exception {
         Node current = head;
         Node prev = null;
         int count = 0;
@@ -277,7 +278,7 @@ public class ListSE {
             }
         }
     }
-    public void moveKidsToEnd(char letter) throws Exception {
+    public void moveKidsToEnd() throws Exception {
         if (head == null) {
             throw new Exception("la lista esta vacia");
         }
