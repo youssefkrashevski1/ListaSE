@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -207,7 +208,7 @@ public class ListDEController {
     @GetMapping(path = "/age_range_report")
     public ResponseEntity<ResponseDTO> generateAgeRangeReport() {
         try {
-            String report = listDEService.GetPets.generateAgeRangeReport();
+            String report = listDEService.getPets().generateAgeRangeReport();
             return new ResponseEntity<>(new ResponseDTO(200, report, null), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new ResponseDTO(400, e.getMessage(), null), HttpStatus.BAD_REQUEST);

@@ -1,6 +1,5 @@
 package co.edu.umanizales.tads.model;
 
-import co.edu.umanizales.tads.service.ListDEService;
 import lombok.Data;
 @Data
 public class ListDE {
@@ -317,13 +316,13 @@ public class ListDE {
         ListDE pets = null;
         return null;
     }
-    public String generateAgeRangeReport(ListDEService petList) throws AgeOutOfRangeException {
+    public String generateAgeRangeReport() throws AgeOutOfRangeException {
         // Define the age ranges and initialize counters for each range
         final int[] AGE_RANGES = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
         int[] ageCount = new int[AGE_RANGES.length + 1]; // the last element counts all pets older than 19
 
         // Iterate over the pet list and count the number of pets in each age range
-        NodeDE current = petList.getHead();
+        NodeDE current = tail.getHead();
         while (current != null) {
             int age = current.getData().getAge();
             if (age < AGE_RANGES[0] || age > AGE_RANGES[AGE_RANGES.length - 1]) {

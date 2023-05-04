@@ -88,7 +88,7 @@ public class ListSE {
         }
     }
 
-    public Node getHead() {
+    public static Node getHead() {
         return null;
     }
 

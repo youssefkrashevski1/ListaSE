@@ -50,24 +50,31 @@ public class KidController {
     }
     @GetMapping("/age-report")
     public ResponseEntity<String> generateAgeReport() {
+        // Crear una nueva instancia de Kid y agregarla a la lista
         ListSE.addKid(new Kid());
 
+        // Contar el número de niños en cada rango de edad
         int[] ageCounts = new int[19];
-        Kid node = ageCounts.Get();
+        assert ListSE.getHead() != null;
+        Kid node = ListSE.getHead().getData();
         while (node != null) {
             ageCounts[node.getAge()]++;
             node = node.getNext();
         }
 
+        // Construir un informe de edad en formato de cadena
         StringBuilder report = new StringBuilder("Age Report:\n");
         for (int i = 0; i < ageCounts.length; i++) {
             if (ageCounts[i] > 0) {
                 report.append("Age ").append(i).append(": ").append(ageCounts[i]).append(" kids\n");
             }
         }
+
+        // Devolver la respuesta HTTP con el informe de edad generado
         return new ResponseEntity<>(report.toString(), HttpStatus.OK);
     }
 }
+
 
 
 
