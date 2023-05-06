@@ -310,7 +310,6 @@ public class ListDE {
         if (currentNode.getNext() != null) {
             currentNode.getNext().setPrevious(currentNode.getPrevious());
         }
-
         size--;
     }
     public ListDE getPets() {
