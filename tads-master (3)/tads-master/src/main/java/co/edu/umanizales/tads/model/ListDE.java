@@ -362,6 +362,10 @@ public class ListDE {
         return null;
     }
 
+    public int size() {
+        return 0;
+    }
+
     public static class AgeOutOfRangeException extends Exception {
         public AgeOutOfRangeException(String message) {
             super(message);
@@ -402,7 +406,106 @@ public class ListDE {
             throw new Exception("No pets found with name starting with " + letter);
         }
     }
+    //Recorre la lista de nodos desde el primer nodo hasta el último nodo.
+    //En cada iteración, compara la identificación del nodo actual con la identificación del nodo que se desea eliminar.
+    //Si la identificación coincide, actualiza los enlaces previos y siguientes de los nodos adyacentes para que se salte el nodo que se desea eliminar.
+    //Si la identificación no coincide, avanza al siguiente nodo y continúa el proceso.
+    //Si llegas al final de la lista sin encontrar un nodo con la identificación deseada, el nodo no existe en la lista.
+    public ListDE removeidenticate() {
+        // Verificar si el nodo es el primer o el último en la lista.
+        NodeDE next;
+        next = null;
+        if (head == null) {
+            // Si es el único nodo en la lista, o el primer nodo en la lista, se actualiza el enlace siguiente del nodo siguiente.
+            return null;
+        }
+        // Si es un nodo intermedio, se actualizan los enlaces previos y siguientes de los nodos adyacentes.
+        head.prev.setNext(null);
+        Node current = null;
+        while (current != null) {
+            boolean id = false;
+            if (current.id == id) {
+                // Se ha encontrado el nodo a eliminar.
+                current.remove();
+                break;
+            }
+            current = current.getNext();
+        }
+
+        return null;
+    }
+//Verifico si el head está vacio. Si es así, no hay nada que eliminar.
+//
+//Verifico si la lista tiene sólo un elemento (es decir, si el head no tiene un nodo siguiente ni anterior). En ese caso, eliminamos el único nodo de la lista y devolvemos null como nuevo head.
+//
+//Para eliminar el primero:
+//
+//Asignamos el siguiente nodo del head como el nuevo head.
+//Establecemos el anterior del nuevo head como null.
+//Establecemos el siguiente del head como null.
+//Devolvemos el nuevo head.
+//Para eliminar el último:
+//
+//Creamos un nuevo nodo llamado current y lo establecemos como el head.
+//Recorremos la lista hasta que current tenga un nodo siguiente nulo
+//Establecemos el siguiente del nodo anterior al current como null.
+//Establecemos el anterior del current como null.
+//Devolvemos el head.
+//Para eliminar el de la mitad:
+//
+//Creamos dos nuevos nodos llamados slow y fast, y los establecemos ambos como el head.
+//Avanzamos slow un nodo a la vez y fast dos nodos a la vez hasta que fast alcance el final de la lista o el nodo anterior al final de la lista.
+//Si la lista tiene un número par de nodos, eliminamos el nodo en la posición N/2+1. Si la lista tiene un número impar de nodos, eliminamos el nodo en la posición (N+1)/2.
+//Establecemos el siguiente del nodo anterior a slow como el siguiente del nodo fast.
+//Establecemos el anterior del nodo siguiente a slow como el anterior del nodo fast.
+//Establecemos el anterior y el siguiente del nodo fast como null.
+//Devolvemos el head.
+public static NodeDE deleteNodes(NodeDE head) {
+    // Si la lista está vacía, no hay nada que eliminar
+    if (head == null) {
+        return null;
+    }
+    // Si la lista tiene sólo un elemento, eliminamos el único nodo y devolvemos null
+    if (head.getNext() == null && head.prev == null) {
+        return null;
+    }
+    // Eliminar el primer nodo
+    NodeDE newHead = head.getNext();
+    newHead.prev = null;
+    head.setNext(null);
+    if (head == null) {
+        return null;
+    }
+
+    // Eliminar el último nodo
+    NodeDE current = head;
+    while (current.getNext() != null) {
+        current = current.getNext();
+    }
+    current.prev.setNext(null);
+    current.prev = null;
+
+    // Eliminar el nodo de la mitad
+    NodeDE slow = head;
+    NodeDE fast = head;
+    while (fast.getNext() != null && fast.getNext().getNext() != null) {
+        slow = slow.getNext();
+        fast = fast.getNext().getNext();
+    }
+    if (fast.getNext() == null) { // lista de longitud par
+        slow.setNext(slow.getNext().getNext());
+        slow.getNext().prev = slow;
+    } else { // lista de longitud impar
+        slow.setNext(fast.getNext());
+        fast.getNext().prev = slow;
+    }
+    fast.prev = null;
+    fast.setNext(null);
+
+    return newHead;
+}
 
 }
+
 
 

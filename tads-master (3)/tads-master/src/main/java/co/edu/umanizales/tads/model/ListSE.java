@@ -239,7 +239,7 @@ public class ListSE {
     public  void advance() throws Exception {
         Node current = head;
         int count = 0;
-        int numPositions;
+        int numPositions = 0;
         while (current != null && count < numPositions) {
             current = current.getNext();
             count++;
@@ -253,8 +253,8 @@ public class ListSE {
         Node current = head;
         Node prev = null;
         int count = 0;
-        int numPositions;
-        while ((current != null) && (count < numPositions)) {
+        int numPositions = 0;
+        while ((current != null) && (numPositions > count)) {
             prev = current;
             current = current.getNext();
             count++;

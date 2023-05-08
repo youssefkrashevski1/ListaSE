@@ -5,6 +5,7 @@ import co.edu.umanizales.tads.model.NodeDE;
 import co.edu.umanizales.tads.model.Pet;
 import co.edu.umanizales.tads.service.ListDEService;
 import co.edu.umanizales.tads.service.LocationService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -234,6 +235,60 @@ public class ListDEController {
             }
         }
     }
+    @GetMapping(path = "/interleave_pets")
+    public ResponseEntity<ResponseDTO> removeidenticate() {
+        ListDE pets = listDEService.getPets().removeidenticate();
+        if (pets.getHead() == null) {
+            return new ResponseEntity<>(new ResponseDTO(
+                    404, "Lista vacía o sin elementos", null), HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(new ResponseDTO(
+                200, "Mascotas intercaladas con éxito", null));
+    }
+
+
+    @GetMapping(path = "/delete_first_last_and_middle_node")
+    public ResponseEntity<ResponseDTO> deleteFirstLastAndMiddleNode() {
+        ListDE petsList = listDEService.getPets();
+        int sizeBefore = petsList.size();
+        deleteNodes(petsList);
+        int sizeAfter = petsList.size();
+        int deletedNodes = sizeBefore - sizeAfter;
+        return new ResponseEntity<>(new ResponseDTO(
+                200, (deletedNodes + " nodes deleted from list"),
+                null), HttpStatus.OK);
+    }
+
+    private void deleteNodes(ListDE list) {
+        // Eliminar primer nodo
+        if (list.getHead() != null) {
+            list.setHead(list.getHead().getNext());
+            if (list.getHead() != null) {
+                list.getHead().setPrev(null);
+            }
+        }
+
+        // Eliminar último nodo
+        if (list.getTail() != null) {
+            list.setTail(list.getTail().getPrev());
+            if (list.getTail() != null) {
+                list.getTail().setNext(null);
+            }
+        }
+
+        // Eliminar nodo de la mitad
+        int size = list.size();
+        if (size >= 3) {
+            int middleIndex = size / 2;
+            NodeDE currentNode = list.getHead();
+            for (int i = 0; i < middleIndex; i++) {
+                currentNode = currentNode.getNext();
+            }
+            currentNode.getPrev().setNext(currentNode.getNext());
+            currentNode.getNext().setPrev(currentNode.getPrev());
+        }
+    }
+
 }
 
 

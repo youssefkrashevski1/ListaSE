@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class Node {
+    public boolean id;
     private Node prev;
     private int value;
     private Kid data;
@@ -11,6 +12,9 @@ public class Node {
 
     public Node(Kid data) {
         this.data = data;
+    }
+
+    public void remove() {
     }
 
     private static class KidNode {

@@ -9,6 +9,7 @@ public class NodeDE {
     public NodeDE prev;
     public int value;
     public Pet pet;
+    public NodeDE head;
     private Pet data;
     private NodeDE next;
     private NodeDE previous;
@@ -18,4 +19,5 @@ public class NodeDE {
         NodeDE head = null;
         return null;
     }
+
 }
