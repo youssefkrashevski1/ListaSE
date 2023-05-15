@@ -4,8 +4,6 @@ import co.edu.umanizales.tads.model.ListDE;
 import co.edu.umanizales.tads.model.NodeDE;
 import co.edu.umanizales.tads.model.Pet;
 import co.edu.umanizales.tads.service.ListDEService;
-import co.edu.umanizales.tads.service.LocationService;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ListDEController {
     @Autowired
     private ListDEService listDEService;
-    @Autowired
-    private LocationService locationService;
+
 
 
     public ListDEController(ListDEService listDEService) {
