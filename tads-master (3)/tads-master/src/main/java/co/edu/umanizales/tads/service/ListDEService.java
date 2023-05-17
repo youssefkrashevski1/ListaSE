@@ -9,27 +9,8 @@ import org.springframework.stereotype.Service;
 @Data
 public class ListDEService {
     private ListDE pets;
-    public ListDEService(){
+
+    public ListDEService() {
         pets = new ListDE();
-    }
-
-    public static void Concat() {
-        ListDEService Pets = null;
-        Pets.invert();
-    }
-
-    private void invert() {
-    }
-
-
-    public NodeDE getHead() {
-        return null;
-    }
-
-    public ListDE getPetsList() {
-        return null;
-    }
-
-    public void movePetsWithNameStartingWith(char letter) {
     }
 }

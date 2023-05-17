@@ -1,23 +1,18 @@
 package co.edu.umanizales.tads.service;
 
-import co.edu.umanizales.tads.model.Kid;
+import co.edu.umanizales.tads.exception.ListSEException;
 import co.edu.umanizales.tads.model.ListSE;
-import co.edu.umanizales.tads.model.Node;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
 @Service
 @Data
 public class ListSEService {
-    private ListSE kids;
+    private ListSE Kids;
 
     public ListSEService() {
-        kids = new ListSE();
-
+        this.Kids = new ListSE();
     }
 
-   public void invert(){
-        kids.invert();
-    }
-
-}
+    public void invert() throws ListSEException { this.Kids.invert(); }
+} //end class ListSEService

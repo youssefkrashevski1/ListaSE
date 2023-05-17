@@ -4,14 +4,30 @@ import co.edu.umanizales.tads.model.Location;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 @Data
-@AllArgsConstructor
 public class PetDTO {
-    private String identification;
-    private String nameOwner;
+    @NotBlank(message = "No puede estar vacio")
+    @Size(max = 30, message = "El nombre no puede superar los 30 caracteres")
+    private String Identification;
+    @NotBlank(message = "No puede estar vacio")
     private String name;
-    private char gender;
-    private String especies;
+    @Min(value = 1)
+    @Max(value = 14)
+    @NotBlank(message = "No puede estar vacio")
     private byte age;
-    private Location location;
+    @NotBlank(message = "No puede estar vacio")
+    private String petType;
+    @NotBlank(message = "No puede estar vacio")
+    private String breed; //(raza)
+    @NotBlank(message = "No puede estar vacio")
+    private String codeLocation;
+    @NotBlank(message = "No puede estar vacio")
+    private char gender;
+    @NotBlank(message = "No puede estar vacio")
+    private  boolean bathed;
 }
